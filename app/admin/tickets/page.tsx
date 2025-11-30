@@ -31,13 +31,14 @@ import {
   AlertTriangle,
   CheckCircle,
 } from "lucide-react";
+import { Agent } from "@/lib/AgentTypes";
 
 export default function AdminTicketsPage() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [filtered, setFiltered] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const [agents, setAgents] = useState([]);
+  const [agents, setAgents] = useState<Agent[]>([]);
   const [openDetails, setOpenDetails] = useState<Ticket | null>(null);
 
   // Filters
@@ -51,7 +52,7 @@ export default function AdminTicketsPage() {
       const t = (await listTickets()) as Ticket[];
       const a = await listUsers();
 
-      setAgents(a.filter((x: any) => x.role === "AGENT"));
+      setAgents(a.filter((x: Agent) => x.role === "AGENT"));
       setTickets(t || []);
       setFiltered(t || []);
     } catch (err) {
@@ -70,8 +71,10 @@ export default function AdminTicketsPage() {
     let list = [...tickets];
 
     if (statusFilter) list = list.filter((t) => t.status === statusFilter);
-    if (priorityFilter) list = list.filter((t) => t.priority === priorityFilter);
-    if (categoryFilter) list = list.filter((t) => t.category === categoryFilter);
+    if (priorityFilter)
+      list = list.filter((t) => t.priority === priorityFilter);
+    if (categoryFilter)
+      list = list.filter((t) => t.category === categoryFilter);
 
     setFiltered(list);
   }, [statusFilter, priorityFilter, categoryFilter, tickets]);
@@ -203,14 +206,12 @@ export default function AdminTicketsPage() {
                 </Select>
 
                 {/* ASSIGN */}
-                <Select
-                  onValueChange={(email) => handleAssign(t.id, email)}
-                >
+                <Select onValueChange={(email) => handleAssign(t.id, email)}>
                   <SelectTrigger className="w-32 h-8 text-xs bg-gray-100">
                     <SelectValue placeholder="Assign" />
                   </SelectTrigger>
                   <SelectContent>
-                    {agents.map((a: any) => (
+                    {agents.map((a) => (
                       <SelectItem key={a.id} value={a.email}>
                         {a.username}
                       </SelectItem>

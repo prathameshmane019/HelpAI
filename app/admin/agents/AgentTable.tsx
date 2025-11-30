@@ -2,14 +2,17 @@
 
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
+import { Agent } from "@/lib/AgentTypes";
 
-interface Agent {
-  id: string;
-  username: string;
-  email: string;
-}
-
-export default function AgentTable({ agents, onDelete, onEdit }: { agents: Agent[]; onDelete: (id: string) => void; onEdit: (agent: Agent) => void }) {
+export default function AgentTable({
+  agents,
+  onDelete,
+  onEdit,
+}: {
+  agents: Agent[];
+  onDelete: (id: number) => void;
+  onEdit: (agent: Agent) => void;
+}) {
   return (
     <div className="border rounded-lg overflow-hidden">
       <table className="w-full text-sm">
@@ -21,7 +24,7 @@ export default function AgentTable({ agents, onDelete, onEdit }: { agents: Agent
           </tr>
         </thead>
         <tbody>
-          {agents.map((a: any) => (
+          {agents.map((a) => (
             <tr key={a.id} className="border-t">
               <td className="p-3">{a.username}</td>
               <td className="p-3">{a.email}</td>

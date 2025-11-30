@@ -6,15 +6,16 @@ import { Button } from "@/components/ui/button";
 import AgentTable from "./AgentTable";
 import AgentForm from "./AgentForm";
 import { UserPlus, Users } from "lucide-react";
+import { Agent } from "@/lib/AgentTypes";
 
 export default function AgentsPage() {
-  const [agents, setAgents] = useState([]);
+  const [agents, setAgents] = useState<Agent[]>([]);
   const [openForm, setOpenForm] = useState(false);
-  const [editAgent, setEditAgent] = useState(null);
+  const [editAgent, setEditAgent] = useState<Agent | null>(null);
 
   const loadAgents = async () => {
     const data = await listUsers();
-    setAgents(data.filter((u: any) => u.role === "AGENT"));
+    setAgents(data.filter((u: Agent) => u.role === "AGENT"));
   };
 
   useEffect(() => {
@@ -45,11 +46,11 @@ export default function AgentsPage() {
       {/* Agents table */}
       <AgentTable
         agents={agents}
-        onDelete={async (id: any) => {
-          await deleteUser(id);
+        onDelete={async (id: number) => {
+          await deleteUser(String(id));
           await loadAgents();
         }}
-        onEdit={(agent: any) => {
+        onEdit={(agent: Agent) => {
           setEditAgent(agent);
           setOpenForm(true);
         }}

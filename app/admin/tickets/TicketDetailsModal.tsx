@@ -6,10 +6,19 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
+import { Ticket } from "@/lib/TicketTypes";
 import { BadgeCheck, Mail, UserCircle, Info } from "lucide-react";
 
-export default function TicketDetailsModal({ ticket, onClose }) {
+interface TicketDetailsModalProps {
+  ticket: Ticket | null;
+  onClose: () => void;
+}
+
+export default function TicketDetailsModal({
+  ticket,
+  onClose,
+}: TicketDetailsModalProps) {
+  if (!ticket) return null;
   return (
     <Dialog open={!!ticket} onOpenChange={onClose}>
       <DialogContent className="max-w-lg">
@@ -49,7 +58,7 @@ export default function TicketDetailsModal({ ticket, onClose }) {
             <UserCircle size={20} className="text-gray-600" />
             <div>
               <p className="text-gray-500">Created by</p>
-              <p className="font-medium">{ticket.createdBy || "Unknown"}</p>
+              <p className="font-medium">{ticket.userEmail || "Unknown"}</p>
             </div>
           </div>
 

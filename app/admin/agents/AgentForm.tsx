@@ -10,8 +10,19 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Agent } from "@/lib/AgentTypes";
 
-export default function AgentForm({ open, onClose, onSuccess, editData }: { open: boolean; onClose: () => void; onSuccess: () => void; editData: any }) {
+export default function AgentForm({
+  open,
+  onClose,
+  onSuccess,
+  editData,
+}: {
+  open: boolean;
+  onClose: () => void;
+  onSuccess: () => void;
+  editData: Agent | null;
+}) {
   const [form, setForm] = useState({
     username: "",
     email: "",
@@ -32,7 +43,7 @@ export default function AgentForm({ open, onClose, onSuccess, editData }: { open
 
   const submit = async () => {
     if (editData) {
-      await updateUser(editData.id, {
+      await updateUser(String(editData.id), {
         username: form.username,
         email: form.email,
       });

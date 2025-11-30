@@ -45,11 +45,12 @@ export default function ChatPage() {
     setChatLog((prev) => {
       const updated = [...prev];
 
-      if (isStreaming) {
-        if (updated.length && updated[updated.length - 1].role === "assistant") {
-          updated[updated.length - 1].content = streamMsg;
-          return updated;
-        }
+      if (
+        updated.length &&
+        updated[updated.length - 1].role === "assistant"
+      ) {
+        updated[updated.length - 1].content = streamMsg;
+        return updated;
       }
 
       return updated;
