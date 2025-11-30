@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { createAgent, updateUser } from "@/lib/api";
 import {
   Dialog,
@@ -42,17 +43,23 @@ export default function AgentForm({
   }, [editData]);
 
   const submit = async () => {
-    if (editData) {
-      await updateUser(String(editData.id), {
-        username: form.username,
-        email: form.email,
-      });
-    } else {
-      await createAgent({ ...form, role: "AGENT" });
-    }
+    try {
+      if (editData) {
+        await updateUser(String(editData.id), {
+          username: form.username,
+          email: form.email,
+        });
+        toast.success("Agent updated successfully");
+      } else {
+        await createAgent({ ...form, role: "AGENT" });
+        toast.success("Agent created successfully");
+      }
 
-    onSuccess();
-    onClose();
+      onSuccess();
+      onClose();
+    } catch (error) {
+      toast.error(editData ? "Failed to update agent" : "Failed to create agent");
+    }
   };
 
   return (

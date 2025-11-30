@@ -19,7 +19,7 @@ export default function Header() {
   }, []);
 
   // Don't show header on certain pages if needed
-  const hideHeader = pathname === "/login" ||pathname=="/admin" || pathname === "/signup";
+  const hideHeader = pathname === "/login" || pathname=="/admin/*" || pathname === "/signup";
   
   if (hideHeader) return null;
 

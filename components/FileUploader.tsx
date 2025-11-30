@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { uploadDocument } from "@/lib/api";
 import type { DocumentMetadata } from "@/lib/DocumentTypes";
 import { Upload, FileIcon } from "lucide-react";
+import { toast } from "sonner";
 
 interface FileUploaderProps {
   onUploaded?: () => void;
@@ -20,10 +21,12 @@ export default function FileUploader({ onUploaded }: FileUploaderProps) {
     try {
       setUploading(true);
       await uploadDocument(file);
+      toast.success("Document uploaded successfully");
       setFile(null);
       onUploaded?.();
     } catch (error) {
       console.error("Upload failed", error);
+      toast.error("Failed to upload document");
     } finally {
       setUploading(false);
     }
@@ -59,3 +62,4 @@ export default function FileUploader({ onUploaded }: FileUploaderProps) {
     </div>
   );
 }
+

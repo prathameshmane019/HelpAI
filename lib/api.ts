@@ -36,9 +36,9 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (res) => res,
   (err) => {
-    if (err.response?.status === 401 ||err.response?.status === 403) {
-      logout(); // clears token and redirects to /login
-    }
+    // if (err.response?.status === 401 ||err.response?.status === 403) {
+    //   logout(); // clears token and redirects to /login
+    // }
     const message = err.response?.data?.message || err.message;
     return Promise.reject(new Error(message));
   }

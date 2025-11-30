@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import {
   listTickets,
@@ -57,6 +58,7 @@ export default function AdminTicketsPage() {
       setFiltered(t || []);
     } catch (err) {
       console.error("Failed to load tickets", err);
+      toast.error("Failed to load tickets");
     } finally {
       setLoading(false);
     }
@@ -82,27 +84,30 @@ export default function AdminTicketsPage() {
   async function handleStatusChange(id: number, status: string) {
     try {
       await updateTicketStatus(id, status);
+      toast.success("Ticket status updated");
       await loadTickets();
     } catch {
-      console.error("Failed to update status");
+      toast.error("Failed to update status");
     }
   }
 
   async function handleAssign(id: number, agentEmail: string) {
     try {
       await assignTicket(id, agentEmail);
+      toast.success("Ticket assigned successfully");
       await loadTickets();
     } catch {
-      console.error("Failed to assign");
+      toast.error("Failed to assign ticket");
     }
   }
 
   async function handleDelete(id: number) {
     try {
       await deleteTicket(id);
+      toast.success("Ticket deleted successfully");
       await loadTickets();
     } catch {
-      console.error("Failed to delete");
+      toast.error("Failed to delete ticket");
     }
   }
 

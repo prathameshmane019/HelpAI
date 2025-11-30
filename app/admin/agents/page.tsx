@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 import { listUsers, deleteUser } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import AgentTable from "./AgentTable";
@@ -47,8 +48,13 @@ export default function AgentsPage() {
       <AgentTable
         agents={agents}
         onDelete={async (id: number) => {
-          await deleteUser(String(id));
-          await loadAgents();
+          try {
+            await deleteUser(String(id));
+            toast.success("Agent deleted successfully");
+            await loadAgents();
+          } catch (error) {
+            toast.error("Failed to delete agent");
+          }
         }}
         onEdit={(agent: Agent) => {
           setEditAgent(agent);

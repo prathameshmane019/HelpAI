@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { listTickets, updateTicketStatus, assignTicket } from "@/lib/api";
 import type { Ticket } from "@/lib/TicketTypes";
 import TicketCard from "@/components/TicketCard";
@@ -48,12 +49,12 @@ export default function AgentTicketsPage() {
       const t = (await listTickets()) as Ticket[];
 
       const mineOrUnassigned = (t || []).filter(
-        ticket => ticket.assignedTo === email || !ticket.assignedTo
+        (ticket) => ticket.assignedTo === email || !ticket.assignedTo
       );
 
       setTickets(mineOrUnassigned);
     } catch (err) {
-      console.error("Failed to load tickets", err);
+      toast.error("Failed to load tickets");
     } finally {
       setLoading(false);
     }
@@ -64,14 +65,15 @@ export default function AgentTicketsPage() {
   }, [email]);
 
   async function handleStatusChange(id: number, status: string) {
-    const ticket = tickets.find(t => t.id === id);
+    const ticket = tickets.find((t) => t.id === id);
     if (!ticket || ticket.assignedTo !== email) return;
 
     try {
       await updateTicketStatus(id, status);
+      toast.success("Ticket status updated");
       await loadTickets();
     } catch (err) {
-      console.error("Failed to update ticket status", err);
+      toast.error("Failed to update ticket status");
     }
   }
 
@@ -80,9 +82,10 @@ export default function AgentTicketsPage() {
 
     try {
       await assignTicket(id, email);
+      toast.success("Ticket assigned to you");
       await loadTickets();
     } catch (err) {
-      console.error("Failed to assign ticket", err);
+      toast.error("Failed to assign ticket");
     }
   }
 
@@ -97,7 +100,7 @@ export default function AgentTicketsPage() {
       </div>
 
       <div className="space-y-4">
-        {tickets.map(ticket => (
+        {tickets.map((ticket) => (
           <div
             key={ticket.id}
             className="border rounded-xl p-4 shadow-sm hover:shadow-md transition cursor-pointer"
@@ -114,7 +117,7 @@ export default function AgentTicketsPage() {
 
                 <Select
                   value={ticket.status || "OPEN"}
-                  onValueChange={val => handleStatusChange(ticket.id, val)}
+                  onValueChange={(val) => handleStatusChange(ticket.id, val)}
                   disabled={ticket.assignedTo !== email}
                 >
                   <SelectTrigger className="h-8 w-32 text-xs">
@@ -134,7 +137,7 @@ export default function AgentTicketsPage() {
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={e => {
+                  onClick={(e) => {
                     e.stopPropagation();
                     handleAssignToSelf(ticket.id);
                   }}

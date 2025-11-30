@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { listDocuments, deleteDocument } from "@/lib/api";
 import type { DocumentMetadata } from "@/lib/DocumentTypes";
@@ -20,6 +21,7 @@ export default function AdminDocumentsPage() {
       setDocuments(docsArray);
     } catch (err) {
       console.error("Failed to load documents", err);
+      toast.error("Failed to load documents");
     } finally {
       setLoading(false);
     }
@@ -32,9 +34,11 @@ export default function AdminDocumentsPage() {
   async function handleDelete(id: string) {
     try {
       await deleteDocument(id);
+      toast.success("Document deleted successfully");
       await loadDocs();
     } catch (err) {
       console.error("Failed to delete document", err);
+      toast.error("Failed to delete document");
     }
   }
 

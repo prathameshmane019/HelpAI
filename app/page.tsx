@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import Header from "@/components/Header";
 
 export default function AIHelpdeskLanding() {
   const [scrolled, setScrolled] = useState(false);
@@ -32,42 +33,9 @@ export default function AIHelpdeskLanding() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-50 via-blue-50 to-slate-100">
-      {/* NAVBAR */}
-      {/* <nav
-        className={`fixed justiy-end w-full z-50 transition-all duration-300 ${scrolled
-            ? "bg-white/70 backdrop-blur-xl shadow-md"
-            : "bg-transparent"
-          }`}
-      >
-        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
-
-          <div className="hidden md:flex items-center space-x-6">
-            <a href="#features" className="hover:text-slate-900 transition">
-              Features
-            </a>
-            <a href="#workflow" className="hover:text-slate-900 transition">
-              Workflow
-            </a>
-            <a href="#contact" className="hover:text-slate-900 transition">
-              Contact
-            </a>
-
-            <Button
-              onClick={() => router.push("/login")}
-              className="shadow-md hover:shadow-lg transition"
-            >
-              Login
-            </Button>
-            <Button
-              variant='outline'
-              onClick={() => router.push("/chat")}
-              className=" "
-            >
-              Try Chat
-            </Button>
-          </div>
-        </div>
-      </nav> */}
+      
+        <Header />
+      
 
       {/* HERO */}
       <section className="pt-40 pb-20 px-6">
